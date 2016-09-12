@@ -60,15 +60,21 @@ public class CheckPermissionActivity extends Activity {
     public static final String SEND_SMS = Manifest.permission.SEND_SMS;
 
     //    public static final String ADD_VOICEMAIL =Manifest.permission.READ_CELL_BROADCASTS;
+
+    /**
+     * 检查权限的函数，如果有就直接调用，没有则申请后调用
+     * @param activity 调用的activity
+     * @param permission 检查的权限
+     * @param checkCode 请求码
+     */
     public void checkPermission(Activity activity, String permission, int checkCode) {
-        this.requestCode = checkCode;
         if (ContextCompat.checkSelfPermission(activity, permission) != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(activity, new String[]{permission},
                     checkCode);
 
         } else {
             //
-            onPermissionSucess(permission,checkCode);
+            onPermissionResult(permission,checkCode,true);
         }
 
     }
@@ -80,29 +86,23 @@ public class CheckPermissionActivity extends Activity {
 
             // permission was granted, yay! Do the
             // contacts-related task you need to do.
-            onPermissionSucess(permissions[0],requestCode);
+            onPermissionResult(permissions[0],requestCode,true);
 
         } else {
 
             // permission denied, boo! Disable the
             // functionality that depends on this permission.
-            onPermissionRefuse(permissions[0],requestCode);
+            onPermissionResult(permissions[0],requestCode,false);
         }
     }
 
     /**
-     * 请求成功调的函数
+     * 请求调的函数
      * @param permission 权限
      * @param requestCode 请求码
      */
-    protected void onPermissionSucess(String permission,int requestCode){};
+    protected void onPermissionResult(String permission,int requestCode,boolean isSucess){};
 
-    /***
-     * 请求失败调的函数
-     * @param permission
-     * @param requestCode
-     */
-    protected void onPermissionRefuse(String permission,int requestCode){};
 
 
 
